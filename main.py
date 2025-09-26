@@ -24,126 +24,67 @@ def syr_plot(lsyr):
 
 """Étude de la suite de Syracuse et utilitaires associés."""
 
-def syracuse_sequence(n: int) -> int:  # pylint: disable=invalid-name
-    """Retourne le terme suivant de la suite de Syracuse pour ``n``.
+def syracuse_sequence(n):      
+    """Calcule la n+1 ième valeur de la suite de Syracuse de source n"""
 
-    Règle : si ``n`` est pair → ``n // 2`` ; sinon → ``3 * n + 1``.
-
-    Args:
-        n: Entier strictement positif.
-
-    Returns:
-        Le terme suivant de la suite (entier).
-
-    Raises:
-        TypeError: si ``n`` n'est pas un ``int``.
-        ValueError: si ``n`` est < 1.
-    """
-    if not isinstance(n, int):
-        raise TypeError("n doit être un entier (int).")
-    if n < 1:
-        raise ValueError("n doit être >= 1.")
-    return n // 2 if n % 2 == 0 else 3 * n + 1
+    if n % 2 ==0:
+        n = n/2
+    else :
+        n = 3*n+1
+    return n
 
 
-def syracuse_l(n: int) -> list[int]:  # pylint: disable=invalid-name
-    """Construit la suite de Syracuse de source ``n`` jusqu'à 1 (inclus).
+def syracuse_l(n):
+    """retourne les valeurs de la suite de Syracuse de source n tant que 1 n'apparaît pas
 
     Args:
-        n: Entier strictement positif.
+        n (int): la source de la suite
 
     Returns:
-        La liste des termes, débutant par ``n`` et se terminant par ``1``.
-
-    Raises:
-        TypeError, ValueError: si ``n`` est invalide.
+        list: la suite de Syracuse de source n
     """
-    if not isinstance(n, int):
-        raise TypeError("n doit être un entier (int).")
-    if n < 1:
-        raise ValueError("n doit être >= 1.")
-
-    seq: list[int] = [n]
+    S = [n]
     while n != 1:
+        S.append(syracuse_sequence(n))
         n = syracuse_sequence(n)
-        seq.append(n)
-    return seq
+    return S    
 
 
-def temps_de_vol(l: list[int]) -> int:  # pylint: disable=invalid-name
-    """Retourne le temps de vol (nombre d'étapes pour atteindre 1).
+def temps_de_vol(l):
+    """Retourne le temps de vol d'une suite de Syracuse de source n
 
     Args:
-        l: Suite de Syracuse (liste non vide d'entiers positifs).
+        l (list): la suite de Syracuse
 
     Returns:
-        Un entier égal à ``len(l) - 1``.
-
-    Raises:
-        TypeError: si ``l`` n'est pas une liste.
-        ValueError: si ``l`` est vide ou contient des valeurs invalides.
+        n (int): le temps de vol
     """
-    if not isinstance(l, list):
-        raise TypeError("l doit être une liste.")
-    if not l:
-        raise ValueError("l ne doit pas être vide.")
-    if not all(isinstance(x, int) and x >= 1 for x in l):
-        raise ValueError("l doit contenir uniquement des entiers positifs.")
     return len(l) - 1
 
-
-def temps_de_vol_en_altitude(l: list[int]) -> int:  # pylint: disable=invalid-name
-    """Durée avant de passer strictement sous la valeur initiale ``l[0]``.
-
-    On part du second terme et on compte combien de termes consécutifs
-    restent supérieurs ou égaux à ``l[0]``. Si la liste ne contient qu'un
-    élément, on retourne 0.
+def temps_de_vol_en_altitude(l):
+    """Retourne le temps de vol en altitude d'une suite de Syracuse de source n
 
     Args:
-        l: Suite de Syracuse (liste non vide d'entiers positifs).
+        l (list): la suite de Syracuse
 
     Returns:
-        Un entier supérieur ou égal à 0.
-
-    Raises:
-        TypeError: si ``l`` n'est pas une liste.
-        ValueError: si ``l`` est vide ou contient des valeurs invalides.
+        int: le temps de vol en altitude
     """
-    if not isinstance(l, list):
-        raise TypeError("l doit être une liste.")
-    if not l:
-        raise ValueError("l ne doit pas être vide.")
-    if not all(isinstance(x, int) and x >= 1 for x in l):
-        raise ValueError("l doit contenir uniquement des entiers positifs.")
-    if len(l) == 1:
-        return 0
 
-    source = l[0]
     i = 1
-    while i < len(l) and l[i] >= source:
+    while l[i] >= l[0]:
         i += 1
     return i - 1
 
-
-def altitude_maximale(l: list[int]) -> int:  # pylint: disable=invalid-name
-    """Retourne l'altitude maximale (le maximum) d'une suite.
+def altitude_maximale(l):
+    """retourne l'altitude maximale d'une suite de Syracuse de source n
 
     Args:
-        l: Suite de Syracuse (liste non vide d'entiers positifs).
+        l (list): la suite de Syracuse
 
     Returns:
-        Le maximum de la suite.
-
-    Raises:
-        TypeError: si ``l`` n'est pas une liste.
-        ValueError: si ``l`` est vide ou contient des valeurs invalides.
+        n (int): l'altitude maximale
     """
-    if not isinstance(l, list):
-        raise TypeError("l doit être une liste.")
-    if not l:
-        raise ValueError("l ne doit pas être vide.")
-    if not all(isinstance(x, int) and x >= 1 for x in l):
-        raise ValueError("l doit contenir uniquement des entiers positifs.")
     return max(l)
 
 #### Fonction principale
