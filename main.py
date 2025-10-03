@@ -6,6 +6,7 @@ from plotly.graph_objects import Scatter, Figure
 
 ### NE PAS MODIFIER ###
 def syr_plot(lsyr):
+    """Génère un plot de la suite de Syracuse"""
     title = "Syracuse" + " (n = " + str(lsyr[0]) + " )"
     fig = Figure({  'layout':   { 'title': {'text': title},
                                 'xaxis': {'title': {'text':"x"}},
@@ -14,17 +15,15 @@ def syr_plot(lsyr):
                 }
     )
 
-    x = [ i for i in range(len(lsyr)) ]
+    x = list(range(len(lsyr))) #plutôt que [ i for i in range(len(lsyr)) ]
     t = Scatter(x=x, y=lsyr, mode="lines+markers", marker_color = "blue")
     fig.add_trace(t)
     fig.show()
     # fig.write_html('fig.html', include_plotlyjs='cdn')
-    return None
+
 #######################
 
-"""Étude de la suite de Syracuse et utilitaires associés."""
-
-def syracuse_sequence(n):      
+def syracuse_sequence(n):
     """Calcule la n+1 ième valeur de la suite de Syracuse de source n"""
 
     if n % 2 ==0:
@@ -43,11 +42,11 @@ def syracuse_l(n):
     Returns:
         list: la suite de Syracuse de source n
     """
-    S = [n]
+    seq = [n]
     while n != 1:
-        S.append(syracuse_sequence(n))
+        seq.append(syracuse_sequence(n))
         n = syracuse_sequence(n)
-    return S    
+    return seq
 
 
 def temps_de_vol(l):
@@ -91,7 +90,7 @@ def altitude_maximale(l):
 
 
 def main():
-
+    """Fait des appels de test"""
     # vos appels à la fonction secondaire ici
     lsyr = syracuse_l(15)
     syr_plot(lsyr)
